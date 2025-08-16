@@ -147,12 +147,12 @@ function WishPlanetPage({ showAddWishModal, onCloseAddWish }) {
             )}
 
             {/* 连接钱包提示 */}
-            {!isConnected && (
+            {/* {!isConnected && (
                 <div className="absolute top-4 left-4 z-50 bg-blue-600 text-white px-4 py-2 rounded-lg cursor-pointer hover:bg-blue-700"
                     onClick={connectWallet}>
                     连接钱包查看链上心愿
                 </div>
-            )}
+            )} */}
 
             {/* 数据状态指示器 */}
             {isConnected && (

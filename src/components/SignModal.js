@@ -128,14 +128,14 @@ const SignModal = ({ isOpen, onClose, signId, onCreateWish, savedWishes = [], on
         <AnimatePresence>
             {isOpen && (
                 <motion.div
-                    className="fixed inset-0 z-[9999] pointer-events-none"
+                    className="fixed inset-0 z-[9999] pointer-events-none bg-[#fff]"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                 >
                     {/* 背景遮罩 */}
                     <motion.div
-                        className="absolute inset-0 bg-black/30 backdrop-blur-sm"
+                        className="absolute inset-0 bg-white/70 backdrop-blur-sm"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
@@ -151,36 +151,28 @@ const SignModal = ({ isOpen, onClose, signId, onCreateWish, savedWishes = [], on
                             exit={{ scale: 0.3, opacity: 0, rotateY: 15 }}
                             transition={{ duration: 0.5, ease: "easeOut", type: "spring", stiffness: 300, damping: 30 }}
                         >
-                            <div className="relative bg-gradient-to-br from-purple-900/40 via-purple-800/30 to-pink-900/40 backdrop-blur-xl border-2 border-purple-400/30 rounded-3xl p-6 w-full max-w-4xl max-h-[90vh] overflow-y-auto shadow-2xl">
-                                {/* 装饰性光晕 */}
-                                <div className="absolute inset-0 bg-gradient-to-br from-purple-400/10 via-transparent to-pink-400/10 rounded-3xl"></div>
-                                <div className="absolute -inset-1 bg-gradient-to-r from-purple-400/20 via-pink-400/20 to-purple-400/20 rounded-3xl blur-lg -z-10"></div>
+                            <div className="relative bg-white/90 backdrop-blur-xl border-2 border-gray-200 rounded-3xl p-6 w-full max-w-4xl max-h-[90vh] overflow-y-auto shadow-2xl">
 
-                                {/* 星星装饰 */}
-                                <div className="absolute top-4 right-16 text-yellow-300 animate-pulse">✨</div>
-                                <div className="absolute top-8 left-12 text-purple-300 animate-bounce" style={{ animationDelay: '0.5s' }}>⭐</div>
-                                <div className="absolute bottom-6 right-8 text-pink-300 animate-pulse" style={{ animationDelay: '1s' }}>💫</div>
 
                                 {/* 关闭按钮 */}
                                 <button
                                     onClick={onClose}
                                     className="absolute top-4 right-4 p-3 rounded-full bg-red-500/20 hover:bg-red-500/40 transition-all duration-300 group z-10"
                                 >
-                                    <X size={20} className="text-white group-hover:rotate-90 transition-transform duration-300" />
+                                    <X size={20} className="text-gray-600 group-hover:rotate-90 transition-transform duration-300" />
                                 </button>
 
                                 {/* 标题 */}
                                 <div className="mb-8 text-center">
                                     <div className="relative inline-block">
-                                        <h2 className="text-3xl font-bold bg-gradient-to-r from-yellow-300 via-pink-300 to-purple-300 bg-clip-text text-transparent mb-3">
+                                        <h2 className="text-3xl font-bold text-gray-800 mb-3">
                                             🏷️ {getSignName(signId)} 🏷️
                                         </h2>
-                                        <div className="absolute -inset-2 bg-gradient-to-r from-yellow-400/20 via-pink-400/20 to-purple-400/20 blur-lg rounded-lg -z-10"></div>
                                     </div>
-                                    <p className="text-white/80 text-lg font-medium">
+                                    <p className="text-gray-600 text-lg font-medium">
                                         这里记录着你的美好心愿和珍贵回忆
                                     </p>
-                                    <div className="mt-2 text-purple-200/60">
+                                    <div className="mt-2 text-gray-500">
                                         心愿总数: {signWishes.length} 个 ✨
                                     </div>
                                 </div>
@@ -190,10 +182,10 @@ const SignModal = ({ isOpen, onClose, signId, onCreateWish, savedWishes = [], on
                                     {signWishes.length === 0 ? (
                                         <div className="text-center py-12">
                                             <div className="text-6xl mb-4 opacity-40">🌟</div>
-                                            <h3 className="text-xl font-bold text-white/70 mb-2">
+                                            <h3 className="text-xl font-bold text-gray-600 mb-2">
                                                 这里还没有心愿
                                             </h3>
-                                            <p className="text-white/50 mb-6">
+                                            <p className="text-gray-500 mb-6">
                                                 点击下方按钮创建你的第一个心愿吧！
                                             </p>
                                         </div>
@@ -205,7 +197,7 @@ const SignModal = ({ isOpen, onClose, signId, onCreateWish, savedWishes = [], on
                                                     initial={{ opacity: 0, y: 20 }}
                                                     animate={{ opacity: 1, y: 0 }}
                                                     transition={{ delay: index * 0.1 }}
-                                                    className="bg-gradient-to-br from-purple-800/30 to-pink-800/30 rounded-2xl p-5 border border-purple-400/20 hover:border-purple-400/40 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/20"
+                                                    className="bg-gray-50 rounded-2xl p-5 border border-gray-200 hover:border-gray-300 transition-all duration-300 hover:shadow-lg hover:shadow-gray-300/50"
                                                 >
                                                     <div className="flex items-start justify-between mb-3">
                                                         <div className="flex items-center gap-2">
@@ -213,15 +205,15 @@ const SignModal = ({ isOpen, onClose, signId, onCreateWish, savedWishes = [], on
                                                                 {getWishCategoryEmoji(wish.wishCategory || 'other')}
                                                             </span>
                                                             <div>
-                                                                <h4 className="font-bold text-white text-lg line-clamp-1">
+                                                                <h4 className="font-bold text-gray-800 text-lg line-clamp-1">
                                                                     {wish.wishTitle || wish.content || '未命名心愿'}
                                                                 </h4>
-                                                                <p className="text-white/60 text-sm">
+                                                                <p className="text-gray-500 text-sm">
                                                                     {formatDate(wish.timestamp || wish.createdAt)}
                                                                 </p>
                                                                 {/* 显示创建者昵称（仅合约数据） */}
                                                                 {wish.nickname && (
-                                                                    <p className="text-purple-300/80 text-xs">
+                                                                    <p className="text-gray-600 text-xs">
                                                                         👤 {wish.nickname}
                                                                     </p>
                                                                 )}
@@ -230,48 +222,48 @@ const SignModal = ({ isOpen, onClose, signId, onCreateWish, savedWishes = [], on
                                                         <div className="flex gap-1">
                                                             <button
                                                                 onClick={() => handleViewWish(wish)}
-                                                                className="p-2 rounded-lg bg-blue-500/20 hover:bg-blue-500/40 transition-all duration-200"
+                                                                className="p-2 rounded-lg bg-blue-100 hover:bg-blue-200 transition-all duration-200"
                                                                 title="查看详情"
                                                             >
-                                                                <Eye size={16} className="text-blue-300" />
+                                                                <Eye size={16} className="text-blue-600" />
                                                             </button>
                                                             <button
                                                                 onClick={() => handleDeleteWish(wish.id)}
-                                                                className="p-2 rounded-lg bg-red-500/20 hover:bg-red-500/40 transition-all duration-200"
+                                                                className="p-2 rounded-lg bg-red-100 hover:bg-red-200 transition-all duration-200"
                                                                 title="删除"
                                                             >
-                                                                <Trash2 size={16} className="text-red-300" />
+                                                                <Trash2 size={16} className="text-red-600" />
                                                             </button>
                                                         </div>
                                                     </div>
 
-                                                    <p className="text-white/80 text-sm line-clamp-2 mb-3">
+                                                    <p className="text-gray-700 text-sm line-clamp-2 mb-3">
                                                         {wish.wishContent || wish.content || '心愿内容'}
                                                     </p>
 
                                                     {wish.feeling && (
-                                                        <p className="text-purple-200/80 text-xs italic bg-purple-500/10 rounded-lg p-2 mb-3">
+                                                        <p className="text-gray-600 text-xs italic bg-gray-100 rounded-lg p-2 mb-3">
                                                             💭 {wish.feeling}
                                                         </p>
                                                     )}
 
                                                     {/* 合约地址信息（仅合约数据） */}
                                                     {wish.address && (
-                                                        <p className="text-blue-200/60 text-xs bg-blue-500/10 rounded-lg p-2 mb-3 break-all">
+                                                        <p className="text-blue-600 text-xs bg-blue-50 rounded-lg p-2 mb-3 break-all">
                                                             🔗 {wish.address}
                                                         </p>
                                                     )}
 
                                                     <div className="flex items-center justify-between text-sm">
-                                                        <span className="text-white/60">
+                                                        <span className="text-gray-600">
                                                             {wish.address ? '⛓️ 链上心愿' : wish.type === 'wish' ? '💫 本地心愿' : `📁 ${wish.type}`}
                                                         </span>
                                                         <div className="flex items-center gap-4">
-                                                            <span className="flex items-center gap-1 text-pink-300">
+                                                            <span className="flex items-center gap-1 text-pink-600">
                                                                 <Heart size={14} />
                                                                 {wish.likes || 0}
                                                             </span>
-                                                            <span className="flex items-center gap-1 text-yellow-300">
+                                                            <span className="flex items-center gap-1 text-yellow-600">
                                                                 <Gift size={14} />
                                                                 {(wish.donations || wish.totalRewards || 0)} MON
                                                             </span>
@@ -287,7 +279,7 @@ const SignModal = ({ isOpen, onClose, signId, onCreateWish, savedWishes = [], on
                                 <div className="flex justify-center">
                                     <button
                                         onClick={handleCreateNew}
-                                        className="px-8 py-4 bg-gradient-to-r from-purple-500 via-pink-500 to-purple-600 hover:from-purple-600 hover:via-pink-600 hover:to-purple-700 text-white rounded-2xl transition-all duration-300 flex items-center gap-3 font-bold text-lg shadow-lg hover:shadow-purple-500/30 border border-purple-400/30 hover:scale-105"
+                                        className="px-8 py-4 bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:from-blue-600 hover:via-blue-700 hover:to-blue-800 text-white rounded-2xl transition-all duration-300 flex items-center gap-3 font-bold text-lg shadow-lg hover:shadow-blue-500/30 border border-blue-300 hover:scale-105"
                                     >
                                         <Plus size={24} />
                                         ✨ 创建新心愿 ✨
@@ -306,49 +298,49 @@ const SignModal = ({ isOpen, onClose, signId, onCreateWish, savedWishes = [], on
                                 animate={{ opacity: 1 }}
                                 exit={{ opacity: 0 }}
                             >
-                                <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
+                                <div className="absolute inset-0 bg-white/70 backdrop-blur-sm" />
                                 <div className="flex items-center justify-center min-h-screen p-4">
                                     <motion.div
                                         initial={{ scale: 0.5, opacity: 0 }}
                                         animate={{ scale: 1, opacity: 1 }}
                                         exit={{ scale: 0.5, opacity: 0 }}
-                                        className="relative bg-gradient-to-br from-purple-900/50 via-purple-800/40 to-pink-900/50 backdrop-blur-xl border-2 border-purple-400/30 rounded-3xl p-8 w-full max-w-2xl shadow-2xl"
+                                        className="relative bg-white/90 backdrop-blur-xl border-2 border-gray-200 rounded-3xl p-8 w-full max-w-2xl shadow-2xl"
                                     >
                                         <button
                                             onClick={() => setShowWishDetail(false)}
-                                            className="absolute top-4 right-4 p-2 rounded-full bg-red-500/20 hover:bg-red-500/40 transition-all"
+                                            className="absolute top-4 right-4 p-2 rounded-full bg-red-100 hover:bg-red-200 transition-all"
                                         >
-                                            <X size={18} className="text-white" />
+                                            <X size={18} className="text-gray-600" />
                                         </button>
 
                                         <div className="text-center mb-6">
                                             <div className="text-4xl mb-3">
                                                 {getWishCategoryEmoji(selectedWish.wishCategory)}
                                             </div>
-                                            <h3 className="text-2xl font-bold text-white mb-2">
+                                            <h3 className="text-2xl font-bold text-gray-800 mb-2">
                                                 {selectedWish.wishTitle}
                                             </h3>
-                                            <p className="text-white/60">
+                                            <p className="text-gray-600">
                                                 {formatDate(selectedWish.timestamp)}
                                             </p>
                                         </div>
 
                                         <div className="space-y-6">
-                                            <div className="bg-white/5 rounded-2xl p-6">
-                                                <h4 className="text-lg font-bold text-white mb-3 flex items-center gap-2">
+                                            <div className="bg-gray-50 rounded-2xl p-6">
+                                                <h4 className="text-lg font-bold text-gray-800 mb-3 flex items-center gap-2">
                                                     📝 心愿内容
                                                 </h4>
-                                                <p className="text-white/90 leading-relaxed">
+                                                <p className="text-gray-700 leading-relaxed">
                                                     {selectedWish.wishContent}
                                                 </p>
                                             </div>
 
                                             {selectedWish.feeling && (
-                                                <div className="bg-purple-500/10 rounded-2xl p-6">
-                                                    <h4 className="text-lg font-bold text-white mb-3 flex items-center gap-2">
+                                                <div className="bg-gray-100 rounded-2xl p-6">
+                                                    <h4 className="text-lg font-bold text-gray-800 mb-3 flex items-center gap-2">
                                                         💭 心情感想
                                                     </h4>
-                                                    <p className="text-purple-200/90 leading-relaxed italic">
+                                                    <p className="text-gray-600 leading-relaxed italic">
                                                         {selectedWish.feeling}
                                                     </p>
                                                 </div>

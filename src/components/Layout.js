@@ -77,31 +77,31 @@ const Layout = ({ onAddWish }) => {
           {/* 添加心愿按钮 */}
           <motion.button
             onClick={onAddWish}
-            className="add-wish-btn relative flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-amber-400 via-yellow-400 to-orange-400 hover:from-amber-500 hover:via-yellow-500 hover:to-orange-500 text-black font-bold rounded-full transition-all duration-500 hover:scale-110 shadow-xl hover:shadow-2xl hover:shadow-yellow-400/40 border-2 border-yellow-200/50 hover:border-yellow-100 backdrop-blur-sm overflow-hidden group"
+            className="add-wish-btn relative flex items-center gap-3 px-5 py-2.5 bg-white/10 hover:bg-white/20 text-yellow-100 border border-yellow-400/30 hover:border-yellow-400/50 shadow-lg hover:shadow-yellow-400/20 font-medium rounded-xl transition-all duration-300 backdrop-blur-sm overflow-hidden group hover:scale-105"
             whileHover={{
-              scale: 1.1,
-              boxShadow: "0 25px 50px -12px rgba(251, 191, 36, 0.5)"
+              scale: 1.05,
+              boxShadow: "0 10px 30px -10px rgba(251, 191, 36, 0.3)"
             }}
-            whileTap={{ scale: 0.95 }}
+            whileTap={{ scale: 0.98 }}
             initial={{ x: -100, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            {/* 闪烁背景 */}
-            <div className="absolute inset-0 bg-gradient-to-r from-white/20 via-transparent to-white/20 translate-x-[-100%] group-hover:translate-x-[200%] transition-transform duration-1000 ease-in-out"></div>
+            {/* 微妙的背景渐变 */}
+            <div className="absolute inset-0 bg-gradient-to-r from-white/5 via-transparent to-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
             {/* 图标和文字 */}
             <motion.div
-              whileHover={{ rotate: 180 }}
-              transition={{ duration: 0.3 }}
+              whileHover={{ rotate: 90 }}
+              transition={{ duration: 0.2 }}
               className="relative z-10"
             >
-              <Plus size={20} />
+              <Plus size={16} />
             </motion.div>
-            <span className="relative z-10 text-lg">✨ 添加心愿</span>
+            <span className="relative z-10 text-sm font-medium text-white">添加心愿</span>
 
-            {/* 装饰星星 */}
-            <div className="absolute -top-1 -right-1 text-yellow-300 text-xs animate-pulse">⭐</div>
+            {/* 微妙的装饰指示器 */}
+            <div className="absolute -top-1 -right-1 w-2 h-2 bg-yellow-400 rounded-full animate-pulse shadow-sm"></div>
           </motion.button>
 
           <Link to="/" className="logo">
@@ -112,59 +112,55 @@ const Layout = ({ onAddWish }) => {
           <motion.button
             onClick={handleWalletConnect}
             disabled={isConnecting}
-            className={`wallet-btn relative flex items-center gap-3 px-6 py-3 rounded-full transition-all duration-500 hover:scale-110 shadow-xl hover:shadow-2xl border-2 font-bold backdrop-blur-sm overflow-hidden group ${isConnected
-              ? 'bg-gradient-to-r from-emerald-400 via-green-400 to-teal-400 hover:from-emerald-500 hover:via-green-500 hover:to-teal-500 text-black border-green-200/50 hover:border-green-100 hover:shadow-green-400/40'
-              : 'bg-gradient-to-r from-blue-400 via-purple-400 to-indigo-400 hover:from-blue-500 hover:via-purple-500 hover:to-indigo-500 text-white border-purple-200/50 hover:border-purple-100 hover:shadow-purple-400/40'
-              } ${isConnecting ? 'opacity-75 cursor-not-allowed' : ''}`}
+            className={`wallet-btn relative flex items-center gap-3 px-5 py-2.5 rounded-xl transition-all duration-300 font-medium backdrop-blur-sm overflow-hidden group ${isConnected
+              ? 'bg-white/10 hover:bg-white/20 text-green-100 border border-green-400/30 hover:border-green-400/50 shadow-lg hover:shadow-green-400/20'
+              : 'bg-white/10 hover:bg-white/20 text-blue-100 border border-blue-400/30 hover:border-blue-400/50 shadow-lg hover:shadow-blue-400/20'
+              } ${isConnecting ? 'opacity-75 cursor-not-allowed' : 'hover:scale-105'}`}
             whileHover={{
-              scale: isConnecting ? 1 : 1.1,
+              scale: isConnecting ? 1 : 1.05,
               boxShadow: isConnected
-                ? "0 25px 50px -12px rgba(16, 185, 129, 0.5)"
-                : "0 25px 50px -12px rgba(139, 92, 246, 0.5)"
+                ? "0 10px 30px -10px rgba(34, 197, 94, 0.3)"
+                : "0 10px 30px -10px rgba(59, 130, 246, 0.3)"
             }}
-            whileTap={{ scale: isConnecting ? 1 : 0.95 }}
+            whileTap={{ scale: isConnecting ? 1 : 0.98 }}
             initial={{ x: 100, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            {/* 闪烁背景 */}
-            <div className="absolute inset-0 bg-gradient-to-r from-white/20 via-transparent to-white/20 translate-x-[-100%] group-hover:translate-x-[200%] transition-transform duration-1000 ease-in-out"></div>
+            {/* 微妙的背景渐变 */}
+            <div className="absolute inset-0 bg-gradient-to-r from-white/5 via-transparent to-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-white"></div>
 
             {isConnecting ? (
               <>
-                <div className="relative z-10 w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                <span className="relative z-10 text-lg">⏳ 连接中...</span>
+                <div className="relative z-10 w-4 h-4 border-2 border-white/70 border-t-transparent rounded-full animate-spin "></div>
+                <span className="relative z-10 text-sm font-medium text-white">连接中...</span>
               </>
             ) : isConnected ? (
               <>
                 <motion.div
-                  whileHover={{ rotate: 180 }}
-                  transition={{ duration: 0.3 }}
+                  whileHover={{ rotate: 90 }}
+                  transition={{ duration: 0.2 }}
                   className="relative z-10"
                 >
-                  <LogOut size={20} />
+                  <LogOut size={16} />
                 </motion.div>
                 <div className="relative z-10 flex flex-col items-start">
-                  <span className="text-lg">🔗 {formatAddress(account)}</span>
-                  <span className="text-xs opacity-75">点击断开</span>
+                  <span className="text-sm font-medium text-white">{formatAddress(account)}</span>
+                  {/* <span className="text-xs text-green-300/80">已连接</span> */}
                 </div>
-                {/* 连接状态指示灯 */}
-                <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full animate-pulse shadow-lg shadow-green-400/50"></div>
+                {/* 连接状态指示器 */}
+                <div className="absolute -top-1 -right-1 w-2 h-2 bg-green-400 rounded-full animate-pulse shadow-sm"></div>
               </>
             ) : (
               <>
                 <motion.div
-                  whileHover={{
-                    rotate: [0, -10, 10, -10, 0],
-                    transition: { duration: 0.5 }
-                  }}
+                  whileHover={{ scale: 1.1 }}
+                  transition={{ duration: 0.2 }}
                   className="relative z-10"
                 >
-                  <Wallet size={20} />
+                  <Wallet size={16} />
                 </motion.div>
-                <span className="relative z-10 text-lg">💰 连接钱包</span>
-                {/* 装饰星星 */}
-                <div className="absolute -top-1 -right-1 text-purple-300 text-xs animate-bounce">💎</div>
+                <span className="relative z-10 text-sm font-medium text-white">连接钱包</span>
               </>
             )}
           </motion.button>
@@ -206,13 +202,13 @@ const Layout = ({ onAddWish }) => {
         }
 
         .wallet-btn {
-          min-width: 140px;
-          min-height: 50px;
+          min-width: 120px;
+          min-height: 40px;
         }
         
         .add-wish-btn {
-          min-width: 140px;
-          min-height: 50px;
+          min-width: 120px;
+          min-height: 40px;
         }
 
         .logo {
