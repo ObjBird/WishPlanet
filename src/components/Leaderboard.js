@@ -2,8 +2,8 @@ import React from 'react';
 import { Heart, Gift, Trophy, Calendar, TrendingUp } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-// 二次元风格排行榜组件
-function Leaderboard({ wishes, timeframe, setTimeframe }) {
+// 现代化白色主题排行榜组件
+function Leaderboard({ wishes = [], timeframe = 'all', setTimeframe }) {
     const sortedWishes = React.useMemo(() => {
         const now = Date.now();
         let filteredWishes = [...wishes];
@@ -11,13 +11,22 @@ function Leaderboard({ wishes, timeframe, setTimeframe }) {
         // 根据时间范围过滤
         switch (timeframe) {
             case 'week':
-                filteredWishes = wishes.filter(w => now - w.timestamp <= 7 * 24 * 60 * 60 * 1000);
+                filteredWishes = wishes.filter(w => {
+                    const timestamp = w.timestamp || w.createdAt || now;
+                    return now - timestamp <= 7 * 24 * 60 * 60 * 1000;
+                });
                 break;
             case 'month':
-                filteredWishes = wishes.filter(w => now - w.timestamp <= 30 * 24 * 60 * 60 * 1000);
+                filteredWishes = wishes.filter(w => {
+                    const timestamp = w.timestamp || w.createdAt || now;
+                    return now - timestamp <= 30 * 24 * 60 * 60 * 1000;
+                });
                 break;
             case 'year':
-                filteredWishes = wishes.filter(w => now - w.timestamp <= 365 * 24 * 60 * 60 * 1000);
+                filteredWishes = wishes.filter(w => {
+                    const timestamp = w.timestamp || w.createdAt || now;
+                    return now - timestamp <= 365 * 24 * 60 * 60 * 1000;
+                });
                 break;
             default:
                 break;
@@ -25,105 +34,135 @@ function Leaderboard({ wishes, timeframe, setTimeframe }) {
 
         // 按点赞数 + 打赏金额排序
         return filteredWishes
-            .sort((a, b) => (b.likes + b.donations) - (a.likes + a.donations))
+            .sort((a, b) => {
+                const scoreA = (a.likes || 0) + (a.donations || a.totalRewards || 0);
+                const scoreB = (b.likes || 0) + (b.donations || b.totalRewards || 0);
+                return scoreB - scoreA;
+            })
             .slice(0, 10);
     }, [wishes, timeframe]);
 
     const timeframeOptions = [
-        { key: 'week', label: '📅 周榜', icon: Calendar, emoji: '🌟' },
-        { key: 'month', label: '📊 月榜', icon: TrendingUp, emoji: '✨' },
-        { key: 'year', label: '🏆 年榜', icon: Trophy, emoji: '👑' }
+        { key: 'all', label: '全部', icon: Trophy },
+        { key: 'week', label: '周榜', icon: Calendar },
+        { key: 'month', label: '月榜', icon: TrendingUp }
     ];
 
+    const getRankIcon = (index) => {
+        switch (index) {
+            case 0: return '🥇';
+            case 1: return '🥈';
+            case 2: return '🥉';
+            default: return `${index + 1}`;
+        }
+    };
+
+    const getRankColor = (index) => {
+        switch (index) {
+            case 0: return 'from-yellow-400 to-yellow-600';
+            case 1: return 'from-gray-300 to-gray-500';
+            case 2: return 'from-orange-400 to-orange-600';
+            default: return 'from-blue-400 to-blue-600';
+        }
+    };
+
     return (
-        <div className="glass-light p-10 rounded-3xl border-2 border-white/30 shadow-2xl relative overflow-hidden hover-lift">
-            {/* Enhanced decorative background */}
-            <div className="absolute top-6 right-6 text-5xl animate-bounce">🌈</div>
-            <div className="absolute bottom-6 left-6 text-4xl animate-pulse">💫</div>
-            <div className="absolute top-1/3 left-8 text-3xl float opacity-40">🎀</div>
-            <div className="absolute bottom-1/3 right-10 text-3xl float opacity-50" style={{ animationDelay: '2s' }}>⭐</div>
-
-            <div className="text-center mb-12">
-                <div className="flex items-center justify-center gap-4 mb-6">
-                    <div className="w-16 h-16 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-3xl flex items-center justify-center pulse-glow">
-                        <Trophy className="w-10 h-10 text-white" />
-                    </div>
-                    <h2 className="text-5xl font-bold gradient-text-primary text-glow">
-                        🏆 愿望排行榜 🏆
-                    </h2>
+        <div className="bg-white/90 backdrop-blur-xl border border-gray-200 rounded-2xl p-4 shadow-lg">
+            {/* 标题 */}
+            <div className="text-center mb-4">
+                <div className="flex items-center justify-center gap-2 mb-2">
+                    <Trophy className="w-5 h-5 text-yellow-600" />
+                    <h2 className="text-lg font-bold text-gray-800">排行榜</h2>
                 </div>
-                <p className="text-white/80 text-xl font-medium mb-8">
-                    发现最受欢迎的心愿，见证美好的力量 ✨
+                <p className="text-gray-600 text-sm">
+                    最受欢迎的心愿 Top 10
                 </p>
-
-                <div className="flex justify-center gap-4">
-                    {timeframeOptions.map(({ key, label, icon: Icon }) => (
-                        <motion.button
-                            key={key}
-                            onClick={() => setTimeframe(key)}
-                            className={`btn btn-glow flex items-center gap-3 ${timeframe === key
-                                ? 'btn-rainbow'
-                                : 'btn-ocean'}`}
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                        >
-                            <Icon className="w-5 h-5" />
-                            {label}
-                        </motion.button>
-                    ))}
-                </div>
             </div>
 
-            <div className="space-y-6">
-                {sortedWishes.map((wish, index) => (
-                    <div
-                        key={wish.id}
-                        className="glass-light p-8 rounded-3xl border border-white/25 hover:border-white/40 transition-all duration-300 transform hover-lift shadow-lg"
+            {/* 时间范围选择 */}
+            <div className="flex justify-center gap-2 mb-4">
+                {timeframeOptions.map(({ key, label, icon: Icon }) => (
+                    <motion.button
+                        key={key}
+                        onClick={() => setTimeframe && setTimeframe(key)}
+                        className={`flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-300 ${
+                            timeframe === key
+                                ? 'bg-blue-100 text-blue-600 border border-blue-300'
+                                : 'bg-gray-50 text-gray-600 border border-gray-200 hover:bg-gray-100'
+                        }`}
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
                     >
-                        <div className="flex items-start gap-6">
-                            <div className={`w-16 h-16 rounded-3xl flex items-center justify-center font-bold text-2xl shadow-xl pulse-glow ${index === 0 ? 'bg-gradient-to-br from-yellow-400 to-yellow-600 text-white' :
-                                index === 1 ? 'bg-gradient-to-br from-gray-300 to-gray-500 text-white' :
-                                    index === 2 ? 'bg-gradient-to-br from-orange-400 to-orange-600 text-white' :
-                                        'bg-gradient-to-br from-purple-400 to-purple-600 text-white'
-                                }`}>
-                                {index === 0 ? '👑' : index === 1 ? '🥈' : index === 2 ? '🥉' : index + 1}
-                            </div>
-
-                            <div className="flex-1">
-                                <div className="glass p-6 rounded-2xl mb-4">
-                                    <p className="text-white leading-relaxed font-medium text-lg">
-                                        {wish.content.slice(0, 80)}{wish.content.length > 80 ? '...' : ''}
-                                    </p>
-                                </div>
-
-                                <div className="flex items-center justify-between">
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-10 h-10 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center">
-                                            <span className="text-lg">👤</span>
-                                        </div>
-                                        <div>
-                                            <p className="text-white/60 text-sm">许愿者</p>
-                                            <p className="text-white font-bold">{wish.author}</p>
-                                        </div>
-                                    </div>
-
-                                    <div className="flex items-center gap-6">
-                                        <div className="glass px-4 py-3 rounded-2xl flex items-center gap-3">
-                                            <Heart className="w-5 h-5 text-pink-400" />
-                                            <span className="text-white font-bold text-lg">{wish.likes}</span>
-                                            <span className="text-xl">💖</span>
-                                        </div>
-                                        <div className="glass px-4 py-3 rounded-2xl flex items-center gap-3">
-                                            <Gift className="w-5 h-5 text-yellow-400" />
-                                            <span className="text-white font-bold text-lg">{wish.donations}</span>
-                                            <span className="text-xl">💰</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                        <Icon className="w-3 h-3" />
+                        {label}
+                    </motion.button>
                 ))}
+            </div>
+
+            {/* 排行榜列表 */}
+            <div className="space-y-2 max-h-96 overflow-y-auto">
+                {sortedWishes.length === 0 ? (
+                    <div className="text-center py-8">
+                        <div className="text-4xl mb-2 opacity-50">🌟</div>
+                        <p className="text-gray-500 text-sm">暂无心愿数据</p>
+                    </div>
+                ) : (
+                    sortedWishes.map((wish, index) => (
+                        <motion.div
+                            key={wish.id || index}
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: index * 0.05 }}
+                            className="bg-gray-50 rounded-xl p-3 border border-gray-100 hover:border-gray-200 transition-all duration-300 hover:shadow-sm"
+                        >
+                            <div className="flex items-start gap-3">
+                                {/* 排名 */}
+                                <div className={`w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm bg-gradient-to-br ${getRankColor(index)} text-white shadow-sm`}>
+                                    {getRankIcon(index)}
+                                </div>
+
+                                {/* 内容 */}
+                                <div className="flex-1 min-w-0">
+                                    <p className="text-gray-800 text-sm mb-2 leading-relaxed overflow-hidden" style={{
+                                        display: '-webkit-box',
+                                        WebkitLineClamp: 2,
+                                        WebkitBoxOrient: 'vertical'
+                                    }}>
+                                        {wish.wishContent || wish.content || '未知心愿'}
+                                    </p>
+
+                                    <div className="flex items-center justify-between">
+                                        {/* 作者 */}
+                                        <div className="flex items-center gap-1">
+                                            <div className="w-4 h-4 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center">
+                                                <span className="text-xs">👤</span>
+                                            </div>
+                                            <span className="text-gray-600 text-xs truncate max-w-16">
+                                                {wish.nickname || wish.author || '匿名'}
+                                            </span>
+                                        </div>
+
+                                        {/* 统计数据 */}
+                                        <div className="flex items-center gap-3">
+                                            <div className="flex items-center gap-1">
+                                                <Heart className="w-3 h-3 text-pink-500" />
+                                                <span className="text-xs font-medium text-gray-700">
+                                                    {wish.likes || 0}
+                                                </span>
+                                            </div>
+                                            <div className="flex items-center gap-1">
+                                                <Gift className="w-3 h-3 text-yellow-500" />
+                                                <span className="text-xs font-medium text-gray-700">
+                                                    {wish.donations || wish.totalRewards || 0}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </motion.div>
+                    ))
+                )}
             </div>
         </div>
     );

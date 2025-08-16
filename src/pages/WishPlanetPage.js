@@ -1,20 +1,23 @@
 import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import ThreeScene from '../components/ThreeScene';
 import ContentModal from '../components/ContentModal';
 import SignModal from '../components/SignModal';
 import AddWishModal from '../components/AddWishModal';
+import Leaderboard from '../components/Leaderboard';
 
 import { useWeb3 } from '../context/Web3Context';
 import toast from 'react-hot-toast';
 
 // 心愿星球页面 - 带指示牌和内容创建功能
-function WishPlanetPage({ showAddWishModal, onCloseAddWish }) {
+function WishPlanetPage({ showAddWishModal, onCloseAddWish, showLeaderboard }) {
     const { getAllWishes, createWish, isConnected, connectWallet } = useWeb3();
     const [showSignModal, setShowSignModal] = useState(false);
     const [showContentModal, setShowContentModal] = useState(false);
     const [selectedSignId, setSelectedSignId] = useState(null);
     const [contractWishes, setContractWishes] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [leaderboardTimeframe, setLeaderboardTimeframe] = useState('all');
 
     // 加载合约心愿数据
     const loadContractWishes = async () => {
@@ -141,7 +144,7 @@ function WishPlanetPage({ showAddWishModal, onCloseAddWish }) {
         <div className="min-h-screen overflow-hidden relative">
             {/* 加载状态指示器 */}
             {isLoading && (
-                <div className="absolute top-4 right-4 z-50 bg-black bg-opacity-50 text-white px-4 py-2 rounded-lg">
+                <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-50 bg-black bg-opacity-50 text-white px-4 py-2 rounded-lg">
                     正在加载合约数据...
                 </div>
             )}
@@ -161,14 +164,35 @@ function WishPlanetPage({ showAddWishModal, onCloseAddWish }) {
                 </div>
             )}
 
+
             {/* 主内容区域 */}
-            <div className="relative">
-                <div className="h-screen">
+            <div className="relative h-screen">
+                {/* 3D 场景 - 全屏 */}
+                <div className="absolute inset-0">
                     <ThreeScene
                         onSignClick={handleSignClick}
                         wishes={allWishes}
                     />
                 </div>
+                
+                {/* 右侧 - 排行榜 - 悬浮在右上角 */}
+                <AnimatePresence>
+                    {showLeaderboard && (
+                        <motion.div 
+                            className="absolute top-4 right-4 z-40 w-80"
+                            initial={{ opacity: 0, x: 50, scale: 0.95 }}
+                            animate={{ opacity: 1, x: 0, scale: 1 }}
+                            exit={{ opacity: 0, x: 50, scale: 0.95 }}
+                            transition={{ duration: 0.3, ease: "easeOut" }}
+                        >
+                            <Leaderboard 
+                                wishes={allWishes}
+                                timeframe={leaderboardTimeframe}
+                                setTimeframe={setLeaderboardTimeframe}
+                            />
+                        </motion.div>
+                    )}
+                </AnimatePresence>
             </div>
 
             {/* 指示牌弹窗 - 显示该牌子的心愿列表 */}

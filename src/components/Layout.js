@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Plus, Wallet, LogOut } from 'lucide-react';
+import { Plus, Wallet, LogOut, Trophy } from 'lucide-react';
 import { useWeb3 } from '../context/Web3Context';
 
-const Layout = ({ onAddWish }) => {
+const Layout = ({ onAddWish, showLeaderboard, onToggleLeaderboard }) => {
   const location = useLocation();
   const [particles, setParticles] = useState([]);
   const { account, isConnecting, isConnected, connectWallet, disconnectWallet } = useWeb3();
@@ -108,7 +108,37 @@ const Layout = ({ onAddWish }) => {
             <span className="logo-text gradient-text-primary">心愿星球</span>
           </Link>
 
-          {/* 钱包连接按钮 */}
+          {/* 右侧按钮组 */}
+          <div className="flex items-center gap-3">
+            {/* 排行榜按钮 - 仅连接钱包后显示 */}
+            {isConnected && (
+              <motion.button
+                onClick={onToggleLeaderboard}
+                className="leaderboard-btn relative flex items-center gap-2 px-5 py-2.5 bg-white/10 hover:bg-white/20 text-yellow-100 border border-yellow-400/30 hover:border-yellow-400/50 shadow-lg hover:shadow-yellow-400/20 rounded-xl transition-all duration-300 font-medium backdrop-blur-sm overflow-hidden group hover:scale-105"
+                whileHover={{
+                  scale: 1.05,
+                  boxShadow: "0 10px 30px -10px rgba(251, 191, 36, 0.3)"
+                }}
+                whileTap={{ scale: 0.98 }}
+                initial={{ x: 50, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ duration: 0.8, delay: 0.4 }}
+              >
+                {/* 微妙的背景渐变 */}
+                <div className="absolute inset-0 bg-gradient-to-r from-white/5 via-transparent to-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                
+                <motion.div
+                  animate={{ rotate: showLeaderboard ? 180 : 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="relative z-10"
+                >
+                  <Trophy size={16} />
+                </motion.div>
+                <span className="relative z-10 text-sm font-medium">排行榜</span>
+              </motion.button>
+            )}
+
+            {/* 钱包连接按钮 */}
           <motion.button
             onClick={handleWalletConnect}
             disabled={isConnecting}
@@ -164,6 +194,7 @@ const Layout = ({ onAddWish }) => {
               </>
             )}
           </motion.button>
+          </div>
         </motion.div>
       </nav>
 
@@ -208,6 +239,11 @@ const Layout = ({ onAddWish }) => {
         
         .add-wish-btn {
           min-width: 120px;
+          min-height: 40px;
+        }
+        
+        .leaderboard-btn {
+          min-width: 100px;
           min-height: 40px;
         }
 

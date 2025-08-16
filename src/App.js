@@ -7,6 +7,7 @@ import { Web3Provider } from './context/Web3Context';
 
 function App() {
     const [showAddWishModal, setShowAddWishModal] = useState(false);
+    const [showLeaderboard, setShowLeaderboard] = useState(false);
 
     const handleAddWish = () => {
         setShowAddWishModal(true);
@@ -16,16 +17,27 @@ function App() {
         setShowAddWishModal(false);
     };
 
+    const handleToggleLeaderboard = () => {
+        setShowLeaderboard(!showLeaderboard);
+    };
+
     return (
         <Web3Provider>
             <div className="app">
                 <AnimatePresence mode="wait">
                     <Routes>
-                        <Route path="/" element={<Layout onAddWish={handleAddWish} />}>
+                        <Route path="/" element={
+                            <Layout 
+                                onAddWish={handleAddWish} 
+                                showLeaderboard={showLeaderboard}
+                                onToggleLeaderboard={handleToggleLeaderboard}
+                            />
+                        }>
                             <Route index element={
                                 <WishPlanetPage
                                     showAddWishModal={showAddWishModal}
                                     onCloseAddWish={handleCloseAddWish}
+                                    showLeaderboard={showLeaderboard}
                                 />
                             } />
                         </Route>
